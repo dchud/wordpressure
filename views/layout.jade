@@ -1,0 +1,14 @@
+!!! 5
+html
+    head
+        title wordpressure
+        meta(charset='utf-8')
+        link(rel='stylesheet', href='/css/style.css')
+        script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js')
+        
+        - if (stream)
+            script(src="/socket.io/socket.io.js")
+            script(src="/js/app.js")
+
+    body
+        div(id="content")!= body

@@ -1,0 +1,4 @@
+ENV
+node_modules
+*.swp
+*.pyc
