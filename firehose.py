@@ -50,5 +50,9 @@ if __name__ == '__main__':
             pass
         else:
             # easiest way to avoid double-escaping in client
-            buf.append(HTMLParser.HTMLParser().unescape(chunk))
+            try:
+                buf.append(HTMLParser.HTMLParser().unescape(chunk))
+            except:
+                # again with the kicking charset errors to the side
+                pass
 
