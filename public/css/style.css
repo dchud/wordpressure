@@ -1,5 +1,11 @@
 body {
-    padding: 3em;
+    background-color: #fff;
+    padding: 2em;
+    }
+
+h1 {
+    font-family: 'Frijole', cursive;
+    font-size: xx-large;
     }
 
 a {

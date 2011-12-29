@@ -4,6 +4,7 @@ html
         title wordpressure
         meta(charset='utf-8')
         link(rel='stylesheet', href='/css/style.css')
+        link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Frijole', type='text/css')
         script(src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js')
         
         - if (stream)
@@ -11,4 +12,5 @@ html
             script(src="/js/app.js")
 
     body
+        h1 WordPressure
         div(id="content")!= body

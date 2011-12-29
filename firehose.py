@@ -28,19 +28,23 @@ if __name__ == '__main__':
         elif '<entry' in chunk:
             buf.append(chunk)
         elif '</entry' in chunk:
-            buf.append(chunk)
-            data = feedparser.parse(u''.join(buf))
-            entry = data['entries'][0]
-            e = {'author': entry['author'],
-                'title': entry['title'],
-                'href': entry['link'],
-                'lang': entry['title_detail']['language']
-                }
-            # pprint(e)
-            # skip anything missing a title; not so interesting to see
-            if e['title']:
-                out = json.dumps(e)
-                r.publish('firehose', out)
+            try:
+                buf.append(chunk)
+                data = feedparser.parse(u''.join(buf))
+                entry = data['entries'][0]
+                e = {'author': entry['author'],
+                    'title': entry['title'],
+                    'href': entry['link'],
+                    'lang': entry['title_detail']['language']
+                    }
+                # pprint(e)
+                # skip anything missing a title; not so interesting to see
+                if e['title']:
+                    out = json.dumps(e)
+                    r.publish('firehose', out)
+            except:
+                # the join above fails due to brain-dead charset handling
+                pass
             buf = []
         elif chunk.startswith('<stream'):
             pass
