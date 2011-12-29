@@ -22,7 +22,7 @@ To install, first set up redis and python:
 
 Next, set up node w/npm:
 
-* install [node](http://node.io/)
+* install [node](http://nodejs.org/)
 * install [npm](http://npmjs.org/)
 * npm install
 
