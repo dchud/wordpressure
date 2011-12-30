@@ -50,7 +50,7 @@ function trim(str) {
 }
 
 function processEntry(entry) {
-    if (entry.title === null) return;
+    if (! entry.title) return;
     var title = entry.title['#'];
     var author = entry.author.name;
     var lang = entry['@']['xml:lang'];
