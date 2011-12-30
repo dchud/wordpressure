@@ -1,5 +1,4 @@
 var express = require('express'),
-    redis = require('redis'),
     sio = require('socket.io'),
     http = require('http'),
     xml2js = require('xml2js'),
