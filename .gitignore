@@ -1,9 +1,4 @@
 ENV
-.Python
-bin
-lib
-include
-*.egg
 node_modules
 *.swp
 *.pyc
