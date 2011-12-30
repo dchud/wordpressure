@@ -1,9 +1,13 @@
 var express = require('express'),
     redis = require('redis'),
     sio = require('socket.io'),
+    http = require('http'),
+    xml2js = require('xml2js'),
+    _ = require('underscore'),
     sys = require('sys');
 
 var app = module.exports = express.createServer();
+var sockets = [];
 
 app.configure(function() {
     app.set('views', __dirname + '/views');
@@ -35,12 +39,60 @@ app.listen(3000);
 var io = sio.listen(app);
 
 io.sockets.on('connection', function(socket) {
-    var firehose = redis.createClient();
-    firehose.subscribe('firehose');
-    firehose.on('message', function(channel, message) {
-        socket.send(message);
-        });
+    sockets.push(socket);
     socket.on('disconnect', function() {
-        firehose.quit();
+        sockets = _.without(sockets, socket);
         });
     });
+
+
+function trim(str) {
+    return str.replace(/^\s+|\s+$/g, '');
+}
+
+function processEntry(entry) {
+    if (entry.title == null) return;
+    //console.log(JSON.stringify(entry));
+    var title = entry.title['#'];
+    var author = entry.author.name;
+    var lang = entry['@']['xml:lang'];
+    var link = _.find(entry.link, function(l) {
+        return l['@'].type == "text/html";
+        });
+
+    var msg = {title: title, author: author, lang: lang, href: link['@'].href};
+    _.each(sockets, function(socket) {
+        socket.emit('firehose', msg);
+    });
+
+    console.log(msg);
+    return msg 
+}
+
+function listenFirehose() {
+    var options = {
+        'host': 'xmpp.wordpress.com',
+        'port': 8008,
+        'path': '/firehose.xml',
+    }
+
+    parser = new xml2js.Parser();
+    parser.addListener('end', processEntry);
+
+    http.get(options, function(res) {
+        var entry = "";
+        res.on('data', function(chunk) {
+            var xmlChunk = String(chunk);
+            if (! xmlChunk.match(/^(<tick|<stream)/)) {
+                entry += xmlChunk;
+                if (xmlChunk.match(/<\/entry>/)) {
+                    xmlChunk = trim(entry);
+                    parser.parseString(entry);
+                    entry = "";
+                }
+            }
+        });
+    });
+}
+
+listenFirehose();

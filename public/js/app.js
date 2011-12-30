@@ -2,19 +2,21 @@ $(document).ready(init);
 
 function init() {
     var socket = io.connect();
-    socket.on('message', function(data) {
-        var msg = jQuery.parseJSON(data);
+    socket.on('firehose', function(msg) {
+        //var msg = jQuery.parseJSON(data);
         addUpdate(msg);
         removeOld();
         });
     };
 
 function addUpdate(msg) {
+    var lang = '[' + msg.lang + '] ';
     var a = $('<a>').attr({
         'href': msg.href,
         'lang': msg.lang,
         target: '_new'}).text(msg.title);
     var d = $('<div>').attr({'class': 'link'})
+        .append(lang)
         .append(a)
         .append(' by ' + msg.author)
         .hide();
