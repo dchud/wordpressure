@@ -3,20 +3,17 @@ $(document).ready(init);
 function init() {
     var socket = io.connect();
     socket.on('firehose', function(msg) {
-        //var msg = jQuery.parseJSON(data);
         addUpdate(msg);
         removeOld();
         });
     };
 
 function addUpdate(msg) {
-    var lang = '[' + msg.lang + '] ';
     var a = $('<a>').attr({
         'href': msg.href,
         'lang': msg.lang,
         target: '_new'}).html(msg.title);
     var d = $('<div>').attr({'class': 'link'})
-        .append(lang)
         .append(a)
         .append(' by ' + msg.author)
         .hide();
