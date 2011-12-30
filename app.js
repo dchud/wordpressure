@@ -51,9 +51,8 @@ function trim(str) {
 }
 
 function processEntry(entry) {
-    if (entry.title == null) return;
-    //console.log(JSON.stringify(entry));
     var title = entry.title['#'];
+    if (title === null) return;
     var author = entry.author.name;
     var lang = entry['@']['xml:lang'];
     var link = _.find(entry.link, function(l) {
@@ -65,7 +64,6 @@ function processEntry(entry) {
         socket.emit('firehose', msg);
     });
 
-    console.log(msg);
     return msg 
 }
 

@@ -14,7 +14,7 @@ function addUpdate(msg) {
     var a = $('<a>').attr({
         'href': msg.href,
         'lang': msg.lang,
-        target: '_new'}).text(msg.title);
+        target: '_new'}).html(msg.title);
     var d = $('<div>').attr({'class': 'link'})
         .append(lang)
         .append(a)
