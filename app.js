@@ -44,11 +44,6 @@ io.sockets.on('connection', function(socket) {
         });
     });
 
-
-function trim(str) {
-    return str.replace(/^\s+|\s+$/g, '');
-}
-
 function processEntry(entry) {
     if (! entry.title) return;
     var title = entry.title['#'];
@@ -83,7 +78,6 @@ function listenFirehose() {
             if (! xmlChunk.match(/^(<tick|<stream)/)) {
                 entry += xmlChunk;
                 if (xmlChunk.match(/<\/entry>/)) {
-                    xmlChunk = trim(entry);
                     parser.parseString(entry);
                     entry = "";
                 }
