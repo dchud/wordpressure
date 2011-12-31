@@ -1,9 +1,9 @@
 var express = require('express'),
-    sio = require('socket.io'),
     http = require('http'),
-    xml2js = require('xml2js'),
+    sio = require('socket.io'),
+    sys = require('sys'),
     _ = require('underscore'),
-    sys = require('sys');
+    xml2js = require('xml2js');
 
 var app = module.exports = express.createServer();
 var sockets = [];
@@ -45,7 +45,8 @@ io.sockets.on('connection', function(socket) {
     });
 
 function processEntry(err, entry) {
-    if (err || ! entry.title) return;
+    if (err || ! entry.title) 
+        return;
     var title = entry.title['#'];
     var author = entry.author.name;
     var lang = entry['@']['xml:lang'];
@@ -53,12 +54,17 @@ function processEntry(err, entry) {
         return l['@'].type == "text/html";
         });
 
-    var msg = {title: title, author: author, lang: lang, href: link['@'].href};
+    var msg = {
+        title: title, 
+        author: author, 
+        lang: lang, 
+        href: link['@'].href
+        };
     _.each(sockets, function(socket) {
         socket.emit('firehose', msg);
-    });
+        });
 
-    return msg 
+    return msg;
 }
 
 function listenFirehose() {
@@ -66,7 +72,7 @@ function listenFirehose() {
         'host': 'xmpp.wordpress.com',
         'port': 8008,
         'path': '/firehose.xml',
-    }
+        };
 
     parser = new xml2js.Parser();
     http.get(options, function(res) {
