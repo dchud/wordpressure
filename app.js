@@ -44,8 +44,8 @@ io.sockets.on('connection', function(socket) {
         });
     });
 
-function processEntry(entry) {
-    if (! entry.title) return;
+function processEntry(err, entry) {
+    if (err || ! entry.title) return;
     var title = entry.title['#'];
     var author = entry.author.name;
     var lang = entry['@']['xml:lang'];
@@ -69,8 +69,6 @@ function listenFirehose() {
     }
 
     parser = new xml2js.Parser();
-    parser.addListener('end', processEntry);
-
     http.get(options, function(res) {
         var entry = "";
         res.on('data', function(chunk) {
@@ -78,7 +76,7 @@ function listenFirehose() {
             if (! xmlChunk.match(/^(<tick|<stream)/)) {
                 entry += xmlChunk;
                 if (xmlChunk.match(/<\/entry>/)) {
-                    parser.parseString(entry);
+                    parser.parseString(entry, processEntry);
                     entry = "";
                 }
             }
