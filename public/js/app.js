@@ -9,6 +9,8 @@ function init() {
     };
 
 function addUpdate(msg) {
+    if($.trim(msg.title) == '')
+        return;
     var a = $('<a>').attr({
         'href': msg.href,
         'lang': msg.lang,
