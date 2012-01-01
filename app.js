@@ -71,6 +71,7 @@ function processEntry(err, entry) {
         lang: lang, 
         href: link['@'].href
         };
+    console.log('sockets size ' + sockets.length);
     _.each(sockets, function(socket) {
         socket.emit('firehose', msg);
         });
