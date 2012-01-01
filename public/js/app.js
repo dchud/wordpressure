@@ -24,6 +24,6 @@ function addUpdate(msg) {
     };
 
 function removeOld() {
-    var old = $('#updates').slice(30);
-    old.fadeOut('fast', function() { old.remove(); });
+    var old = $('.link').slice(30);
+    old.fadeOut('medium', function() { old.remove(); });
     };
