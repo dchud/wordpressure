@@ -42,7 +42,7 @@ var sockets = [];
 
 // see http://devcenter.heroku.com/articles/using-socket-io-with-node-js-on-heroku
 io.configure(function () { 
-  io.set('transports', ['xhr-polling']); 
+    io.set('transports', ['xhr-polling']); 
     io.set('polling duration', 10); 
     });
 
