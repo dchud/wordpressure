@@ -49,9 +49,7 @@ io.configure(function () {
 io.sockets.on('connection', function(socket) {
     sockets.push(socket);
     socket.on('disconnect', function() {
-        console.log('removing socket ' + socket + ' size ' + sockets.length);
         sockets = _.without(sockets, socket);
-        console.log('removed socket ' + socket + ' size ' + sockets.length);
         });
     });
 
@@ -71,7 +69,6 @@ function processEntry(err, entry) {
         lang: lang, 
         href: link['@'].href
         };
-    console.log('sockets size ' + sockets.length);
     _.each(sockets, function(socket) {
         socket.emit('firehose', msg);
         });
@@ -99,9 +96,7 @@ function listenFirehose() {
                 }
             }
         });
-    }).on('error', function(e) {
-        console.log('error: ' + e);
-        });
+    });
 }
 
 listenFirehose();
