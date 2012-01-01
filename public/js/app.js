@@ -8,9 +8,6 @@ function init() {
             removeOld();
             });
         });
-    socket.on('error', function(e) {
-      alert(e);
-      });
     };
 
 function addUpdate(msg) {

@@ -99,7 +99,9 @@ function listenFirehose() {
                 }
             }
         });
-    });
+    }).on('error', function(e) {
+        console.log('error: ' + e);
+        });
 }
 
 listenFirehose();
