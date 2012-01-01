@@ -49,8 +49,9 @@ io.configure(function () {
 io.sockets.on('connection', function(socket) {
     sockets.push(socket);
     socket.on('disconnect', function() {
-        console.log('removing socket ' + socket);
+        console.log('removing socket ' + socket + ' size ' + sockets.length);
         sockets = _.without(sockets, socket);
+        console.log('removed socket ' + socket + ' size ' + sockets.length);
         });
     });
 
