@@ -3,7 +3,6 @@ $(document).ready(init);
 function init() {
     var socket = io.connect();
     socket.on('connect', function() {
-        alert('connected'); 
         socket.on('firehose', function(msg) {
             addUpdate(msg);
             removeOld();
