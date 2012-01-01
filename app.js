@@ -6,7 +6,6 @@ var express = require('express'),
     xml2js = require('xml2js');
 
 var app = module.exports = express.createServer(express.logger());
-var sockets = [];
 
 app.configure(function() {
     app.set('views', __dirname + '/views');
@@ -39,11 +38,12 @@ app.listen(port, function() {
     });
 
 var io = sio.listen(app);
+var sockets = [];
 
 io.sockets.on('connection', function(socket) {
     sockets.push(socket);
     socket.on('disconnect', function() {
-        sockets = _.without(sockets, socket);
+        _.without(sockets, socket);
         });
     });
 
