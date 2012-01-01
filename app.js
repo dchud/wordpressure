@@ -49,7 +49,7 @@ io.configure(function () {
 io.sockets.on('connection', function(socket) {
     sockets.push(socket);
     socket.on('disconnect', function() {
-        _.without(sockets, socket);
+        sockets = _.without(sockets, socket);
         });
     });
 
