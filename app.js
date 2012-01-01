@@ -83,7 +83,6 @@ function listenFirehose() {
         'path': '/firehose.xml',
         };
 
-    parser = new xml2js.Parser();
     http.get(options, function(res) {
         var entry = "";
         res.on('data', function(chunk) {
@@ -91,6 +90,7 @@ function listenFirehose() {
             if (! xmlChunk.match(/^(<tick|<stream)/)) {
                 entry += xmlChunk;
                 if (xmlChunk.match(/<\/entry>/)) {
+                    parser = new xml2js.Parser();
                     parser.parseString(entry, processEntry);
                     entry = "";
                 }
