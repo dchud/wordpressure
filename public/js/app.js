@@ -2,11 +2,9 @@ $(document).ready(init);
 
 function init() {
     var socket = io.connect();
-    socket.on('connect', function() {
-        socket.on('firehose', function(msg) {
-            addUpdate(msg);
-            removeOld();
-            });
+    socket.on('firehose', function(msg) {
+        addUpdate(msg);
+        removeOld();
         });
     };
 
