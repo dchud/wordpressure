@@ -5,7 +5,7 @@ var express = require('express'),
     _ = require('underscore'),
     xml2js = require('xml2js');
 
-var app = module.exports = express.createServer();
+var app = module.exports = express.createServer(express.logger());
 var sockets = [];
 
 app.configure(function() {
@@ -33,7 +33,10 @@ app.get('/', function(req, res) {
         });
     });
 
-app.listen(3000);
+var port = process.env.PORT || 3000;
+app.listen(port, function() {
+    console.log('Listening on ' + port);
+    });
 
 var io = sio.listen(app);
 
