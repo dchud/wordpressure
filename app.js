@@ -56,13 +56,20 @@ io.sockets.on('connection', function(socket) {
 function processEntry(err, entry) {
     if (err || ! entry.title) 
         return;
-    var title = entry.title['#'];
+    if (_.isString(entry.title)) {
+        var title = entry.title;
+    } else {
+        var title = entry.title['#'];
+    }
     var author = entry.author.name;
     var lang = entry['@']['xml:lang'];
-    var link = _.find(entry.link, function(l) {
-        return l['@'].type == "text/html";
-        });
-
+    if (_.isArray(entry.link)) {
+        var link = _.find(entry.link, function(l) {
+            return l['@'].type == "text/html";
+            });
+    } else {
+        var link = entry.link;
+    }
     var msg = {
         title: title, 
         author: author, 
@@ -76,13 +83,7 @@ function processEntry(err, entry) {
     return msg;
 }
 
-function listenFirehose() {
-    var options = {
-        'host': 'xmpp.wordpress.com',
-        'port': 8008,
-        'path': '/firehose.xml',
-        };
-
+function listenHose(options) {
     http.get(options, function(res) {
         var entry = "";
         res.on('data', function(chunk) {
@@ -99,4 +100,18 @@ function listenFirehose() {
     });
 }
 
-listenFirehose();
+var firehoseOptions = {
+    'name': 'firehose',
+    'host': 'xmpp.wordpress.com',
+    'port': 8008,
+    'path': '/firehose.xml',
+    };
+listenHose(firehoseOptions);
+
+var gusherOptions = {
+    'name': 'gusher',
+    'host': 'xmpp.wordpress.com',
+    'port': 8008,
+    'path': '/gusher.xml',
+    };
+listenHose(gusherOptions);
